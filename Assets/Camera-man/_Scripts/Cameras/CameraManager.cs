@@ -10,8 +10,12 @@ public class CameraManager : MonoBehaviour {
 
     public CameraController [] cameras;
     public CameraMode cameraMode { get; private set; }
+    private InputHandler inputHandler;
+    private float targetLookRotation;
 
     public void Init (InputHandler _inputHandler) {
+
+        inputHandler = _inputHandler;
         for (int i = 0; i < cameras.Length; i++) {
 
             cameras [i].Init (_inputHandler);
@@ -23,6 +27,13 @@ public class CameraManager : MonoBehaviour {
         };
     }
 
+    void Update () {
+
+        targetLookRotation -= inputHandler.mouseAxis.x * 3f;
+        targetLookRotation = Mathf.Clamp (targetLookRotation, -70f, 70f);
+        transform.localEulerAngles = Vector3.right * targetLookRotation;
+    }
+
     public void SetCameraMode (CameraMode mode) {
 
         cameraMode = mode;
@@ -30,12 +41,10 @@ public class CameraManager : MonoBehaviour {
 
             cameras [0].SetActive (true);
             cameras [1].SetActive (false);
-            cameras [0].transform.eulerAngles = cameras [1].transform.eulerAngles;
         } else {
 
             cameras [0].SetActive (false);
             cameras [1].SetActive (true);
-            cameras [1].transform.eulerAngles = cameras [0].transform.eulerAngles;
         }
     }
 }

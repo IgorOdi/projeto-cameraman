@@ -18,28 +18,20 @@ public class InputHandler : MonoBehaviour {
     private const string HORIZONTAL_AXIS = "Horizontal";
     private const string VERTICAL_AXIS = "Vertical";
 
-    public void Init () {
-
-    }
+    public void Init () { }
 
     private void Update () {
 
         mouseAxis = Vector2.up * Input.GetAxisRaw (MOUSE_HORIZONTAL_AXIS) + Vector2.right * Input.GetAxisRaw (MOUSE_VERTICAL_AXIS);
         moveAxis = Vector3.forward * Input.GetAxisRaw (VERTICAL_AXIS) + Vector3.right * Input.GetAxisRaw (HORIZONTAL_AXIS);
 
-        if (Input.GetMouseButtonDown (1)) {
-
+        if (Input.GetMouseButtonDown (1))
             OnRightMouseButtonPress?.Invoke ();
-        }
 
-        if (Input.GetMouseButtonUp (1)) {
-
+        if (Input.GetMouseButtonUp (1))
             OnRightMouseButtonRelease?.Invoke ();
-        }
 
-        if (Input.GetMouseButtonDown (0)) {
-
+        if (Input.GetMouseButtonDown (0))
             OnLeftMouseButtonPress?.Invoke ();
-        }
     }
 }
