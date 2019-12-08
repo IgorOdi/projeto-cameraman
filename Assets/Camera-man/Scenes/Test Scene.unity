@@ -241,7 +241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   configs:
-    "tempoExposi\xE7\xE3o": 8
+    "tempoExposi\xE7\xE3o": 1
     isoValue: 0.059
   lastPictureController: {fileID: 1758070504}
 --- !u!1 &312359343

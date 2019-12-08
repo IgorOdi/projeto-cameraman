@@ -48,7 +48,7 @@ public class PhotoCameraController : CameraController {
             cam.Render ();
             RenderTexture.active = renderTexture;
 
-            Texture2D lastTex = new Texture2D (width, height, TextureFormat.RGB24, false);
+            Texture2D lastTex = new Texture2D (width, height, TextureFormat.ARGB32, false);
             lastTex.ReadPixels (rect, 0, 0);
             lastTex.Apply ();
             textures.Add (lastTex);
@@ -72,6 +72,7 @@ public class PhotoCameraController : CameraController {
     private void ProcessAllPictures (ref Texture2D mainTex) {
 
         Color [] finalColors = new Color [mainTex.GetPixels ().Length];
+        finalColors = Enumerable.Range (0, finalColors.Length).Select (x => Color.gray).ToArray ();
         for (int j = 0; j < textures.Count; j++) {
 
             Color [] texturePixelColors = textures [j].GetPixels ();
@@ -80,6 +81,7 @@ public class PhotoCameraController : CameraController {
                 finalColors [i] += texturePixelColors [i] * configs.isoValue;
             }
         }
+
         mainTex.SetPixels (finalColors);
         mainTex.Apply ();
     }
