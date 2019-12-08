@@ -8,6 +8,7 @@ public class CameraController : MonoBehaviour {
     public void Init (InputHandler _inputHandler) {
 
         inputHandler = _inputHandler;
+        cam = GetComponentInChildren<Camera> ();
     }
 
     public void SetActive (bool active) {

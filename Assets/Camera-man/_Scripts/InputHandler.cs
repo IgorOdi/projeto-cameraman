@@ -13,6 +13,8 @@ public class InputHandler : MonoBehaviour {
 
     public Action OnLeftMouseButtonPress;
 
+    public float mouseScrollDelta { get; private set; }
+
     private const string MOUSE_HORIZONTAL_AXIS = "Mouse X";
     private const string MOUSE_VERTICAL_AXIS = "Mouse Y";
     private const string HORIZONTAL_AXIS = "Horizontal";
@@ -24,6 +26,8 @@ public class InputHandler : MonoBehaviour {
 
         mouseAxis = Vector2.up * Input.GetAxisRaw (MOUSE_HORIZONTAL_AXIS) + Vector2.right * Input.GetAxisRaw (MOUSE_VERTICAL_AXIS);
         moveAxis = Vector3.forward * Input.GetAxisRaw (VERTICAL_AXIS) + Vector3.right * Input.GetAxisRaw (HORIZONTAL_AXIS);
+
+        mouseScrollDelta = Input.mouseScrollDelta.y;
 
         if (Input.GetMouseButtonDown (1))
             OnRightMouseButtonPress?.Invoke ();
