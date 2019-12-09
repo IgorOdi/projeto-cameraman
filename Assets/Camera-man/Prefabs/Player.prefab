@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 3493425929142399405}
   - component: {fileID: 3493425929142399402}
   - component: {fileID: 3493425929142399404}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -690,6 +690,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: 4feb46a35afac2e48948df4b2f0a59fc, type: 2}
+  volume: {fileID: 3493425930058145447}
 --- !u!114 &3493425930058145464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -888,8 +889,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   configs:
+    aberturaFocal: 0.1
     "tempoExposi\xE7\xE3o": 3
-    isoValue: 0.33
+    isoValue: 0.233
     filterList:
     - {fileID: 2100000, guid: 4feb46a35afac2e48948df4b2f0a59fc, type: 2}
     - {fileID: 2100000, guid: a29c835636b03f74fa0832e06c2417b9, type: 2}
@@ -897,6 +899,9 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 97fd1823688d98842830c71a73c24734, type: 2}
   postProcessController: {fileID: 3493425930058145445}
   lastPictureController: {fileID: 3493425928680388960}
+  focusLayer:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &3493425930464265767
 GameObject:
   m_ObjectHideFlags: 0

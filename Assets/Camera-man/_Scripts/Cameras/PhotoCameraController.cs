@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+//TODO: Corrigir valores de foco
+//TODO: Aplicar efeito de granulado no iso
+
 public class PhotoCameraController : CameraController {
 
     [SerializeField]
@@ -16,14 +19,22 @@ public class PhotoCameraController : CameraController {
     private LastPictureController lastPictureController;
     private List<Texture2D> textures = new List<Texture2D> ();
 
+    [SerializeField]
+    private LayerMask focusLayer;
+    private RaycastHit focusHit;
+    private float focusDistance;
+
+    private float MIN_FOCUS_DISTANCE = 5;
+
     private void OnEnable () => inputHandler.OnLeftMouseButtonPress += TakePhoto;
     private void OnDisable () => inputHandler.OnLeftMouseButtonPress -= TakePhoto;
 
     public override void Init (InputHandler _inputHandler) {
 
         base.Init (_inputHandler);
-        inputHandler.OnNumberKeyPress += SetFilter;
+        postProcessController.Init ();
         lastPictureController.Init ();
+        inputHandler.OnNumberKeyPress += SetFilter;
     }
 
     void Update () {
@@ -31,6 +42,17 @@ public class PhotoCameraController : CameraController {
         fieldOfView -= inputHandler.mouseScrollDelta;
         fieldOfView = Mathf.Clamp (fieldOfView, 15, 70);
         cam.fieldOfView = fieldOfView;
+        CalculateFocus ();
+        postProcessController.SetAperture (1 - configs.aberturaFocal);
+    }
+
+    private void CalculateFocus () {
+
+        if (Physics.Raycast (cam.transform.position, cam.transform.forward, out focusHit, 100, focusLayer)) {
+
+            focusDistance = Mathf.Max (MIN_FOCUS_DISTANCE, Vector3.Distance (cam.transform.position, focusHit.point) - (60 - fieldOfView));
+            postProcessController.SetFocusDistance (focusDistance);
+        }
     }
 
     private void SetFilter (int filterIndex) {
