@@ -5,7 +5,7 @@ public class CameraController : MonoBehaviour {
     protected InputHandler inputHandler;
     protected Camera cam;
 
-    public void Init (InputHandler _inputHandler) {
+    public virtual void Init (InputHandler _inputHandler) {
 
         inputHandler = _inputHandler;
         cam = GetComponentInChildren<Camera> ();

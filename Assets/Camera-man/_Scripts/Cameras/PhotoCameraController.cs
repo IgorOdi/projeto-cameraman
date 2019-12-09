@@ -10,15 +10,19 @@ public class PhotoCameraController : CameraController {
     private float fieldOfView = 60;
 
     [SerializeField]
+    private PostProcessController postProcessController;
+
+    [SerializeField]
     private LastPictureController lastPictureController;
     private List<Texture2D> textures = new List<Texture2D> ();
 
     private void OnEnable () => inputHandler.OnLeftMouseButtonPress += TakePhoto;
     private void OnDisable () => inputHandler.OnLeftMouseButtonPress -= TakePhoto;
 
-    public new void Init (InputHandler _inputHandler) {
+    public override void Init (InputHandler _inputHandler) {
 
         base.Init (_inputHandler);
+        inputHandler.OnNumberKeyPress += SetFilter;
         lastPictureController.Init ();
     }
 
@@ -27,6 +31,11 @@ public class PhotoCameraController : CameraController {
         fieldOfView -= inputHandler.mouseScrollDelta;
         fieldOfView = Mathf.Clamp (fieldOfView, 15, 70);
         cam.fieldOfView = fieldOfView;
+    }
+
+    private void SetFilter (int filterIndex) {
+
+        postProcessController.material = configs.filterList [filterIndex];
     }
 
     private void TakePhoto () {
@@ -38,12 +47,12 @@ public class PhotoCameraController : CameraController {
 
         int width = 512;
         int height = 512;
-        RenderTexture renderTexture = new RenderTexture (width, height, 16);
-        Texture2D tex = new Texture2D (width, height, TextureFormat.RGB24, false);
+        Texture2D tex = new Texture2D (width, height, TextureFormat.ARGB32, false);
         Rect rect = new Rect (0, 0, width, height);
 
         for (int i = 0; i < configs.tempoExposição; i++) {
 
+            RenderTexture renderTexture = new RenderTexture (width, height, 16);
             cam.targetTexture = renderTexture;
             cam.Render ();
             RenderTexture.active = renderTexture;
@@ -72,13 +81,13 @@ public class PhotoCameraController : CameraController {
     private void ProcessAllPictures (ref Texture2D mainTex) {
 
         Color [] finalColors = new Color [mainTex.GetPixels ().Length];
-        finalColors = Enumerable.Range (0, finalColors.Length).Select (x => Color.gray).ToArray ();
-        for (int j = 0; j < textures.Count; j++) {
+        finalColors = Enumerable.Range (0, finalColors.Length).Select (x => Color.black).ToArray ();
+        for (int i = 0; i < textures.Count; i++) {
 
-            Color [] texturePixelColors = textures [j].GetPixels ();
-            for (int i = 0; i < finalColors.Length; i++) {
+            Color [] texturePixelColors = textures [i].GetPixels ();
+            for (int j = 0; j < finalColors.Length; j++) {
 
-                finalColors [i] += texturePixelColors [i] * configs.isoValue;
+                finalColors [j] += texturePixelColors [j] * configs.isoValue;
             }
         }
 

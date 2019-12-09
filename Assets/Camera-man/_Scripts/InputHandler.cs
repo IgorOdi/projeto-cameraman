@@ -13,6 +13,8 @@ public class InputHandler : MonoBehaviour {
 
     public Action OnLeftMouseButtonPress;
 
+    public Action<int> OnNumberKeyPress;
+
     public float mouseScrollDelta { get; private set; }
 
     private const string MOUSE_HORIZONTAL_AXIS = "Mouse X";
@@ -37,5 +39,14 @@ public class InputHandler : MonoBehaviour {
 
         if (Input.GetMouseButtonDown (0))
             OnLeftMouseButtonPress?.Invoke ();
+
+        if (Input.anyKeyDown) {
+
+            var numberKey = int.TryParse (Input.inputString, out int result);
+            if (numberKey && result >= 1 && result <= 4) {
+
+                OnNumberKeyPress?.Invoke (result - 1);
+            }
+        }
     }
 }
